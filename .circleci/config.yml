@@ -1,0 +1,156 @@
+slack_image: &slack_image
+  docker:
+    - image: devatherock/simple-slack:0.7.0
+      auth:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+
+orbs:
+  docker: circleci/docker@1.7.0
+
+work_directory: &work_directory
+  working_directory: ~/changelog-updater
+
+resource_class: &resource_class
+  resource_class: small
+  
+release_filter: &release_filter
+  filters:
+    branches:
+      only: non-existent-branch
+    tags:
+      only: /^v[0-9\.]+$/
+  
+executors:
+  jdk-executor:
+    docker:
+      - image: devatherock/graalvm:0.2.0
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    <<: *resource_class
+    <<: *work_directory
+  docker-executor:
+    docker:
+      - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    <<: *resource_class
+    <<: *work_directory
+
+version: 2.1
+jobs:
+  test:
+    executor: jdk-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/changelog-updater
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies
+      - run: |
+          ./gradlew check sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+      - store_test_results:
+          path: build/test-results
+  build:
+    executor: jdk-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/changelog-updater
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies
+      - run: |
+          ./gradlew build coveralls sonarqube -Dsonar.login=$SONAR_TOKEN -Dgraalvm=true
+      - persist_to_workspace:
+          root: ~/changelog-updater
+          paths:
+            - build
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - store_test_results:
+          path: build/test-results
+  
+  publish_release:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/changelog-updater
+      - run: |
+          TAG=${CIRCLE_TAG#v}
+          DEV_TAG=${CIRCLE_SHA1:0:8}
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker pull devatherock/changelog-updater:$DEV_TAG
+          docker tag devatherock/changelog-updater:$DEV_TAG devatherock/changelog-updater:$TAG
+          docker push devatherock/changelog-updater:$TAG
+
+  notify:
+    <<: *slack_image
+    <<: *resource_class
+    environment:
+      TEXT: "Success: {{.CircleBuildUrl}} by {{.CircleUsername}}"
+      CHANNEL: general
+      TITLE: "Build completed"
+    steps:
+      - run: /bin/simpleslack -c "#33ad7f" || true
+
+workflows:
+  version: 2.1
+  build_publish:
+    jobs:
+      - build:
+          context:
+            - docker-credentials
+            - sonar-credentials
+          filters:
+            branches:
+              only: master
+      - docker/publish:
+          name: publish
+          executor: docker-executor
+          context:
+            - docker-credentials
+          requires:
+            - build
+          image: devatherock/changelog-updater
+          attach-at: ~/changelog-updater
+          tag: "${CIRCLE_SHA1:0:8},latest"
+          use-remote-docker: true
+          docker-username: DOCKER_USERNAME
+      - notify:
+          context:
+            - docker-credentials
+            - slack-webhook
+          requires:
+            - publish
+  release:
+    jobs:
+      - publish_release:
+          context:
+            - docker-credentials
+          <<: *release_filter
+      - notify:
+          context:
+            - docker-credentials
+            - slack-webhook
+          <<: *release_filter
+          requires:
+            - publish_release
+  pr_check:
+    jobs:
+      - test:
+          context:
+            - docker-credentials
+            - sonar-credentials
+          filters:
+            branches:
+              ignore: master
