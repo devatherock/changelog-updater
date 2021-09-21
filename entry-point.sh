@@ -85,4 +85,4 @@ if [ ! -z "$EMAIL" ]; then
    ALL_OPTS="$ALL_OPTS -ue $EMAIL"
 fi
 
-java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar changelog-updater.jar $ALL_OPTS
+java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar /scripts/changelog-updater.jar $ALL_OPTS
