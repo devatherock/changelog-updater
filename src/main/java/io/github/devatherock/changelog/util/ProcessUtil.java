@@ -21,14 +21,19 @@ public class ProcessUtil {
      * @return exit code
      */
     public static int executeCommand(Object command, boolean shell) {
-        Object finalCommand = command;
-        if (shell && !(finalCommand instanceof String[])) {
-            finalCommand = new String[] { "sh", "-c", finalCommand.toString() };
+        String[] finalCommand = null;
+
+        if (shell && !(command instanceof String[])) {
+            finalCommand = new String[] { "sh", "-c", command.toString() };
+        } else if (command instanceof String) {
+            finalCommand = new String[] { command.toString() };
+        } else {
+            finalCommand = (String[]) command;
         }
         int exitCode = 0;
 
         try {
-            Process process = Runtime.getRuntime().exec((String[]) finalCommand);
+            Process process = Runtime.getRuntime().exec(finalCommand);
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ByteArrayOutputStream err = new ByteArrayOutputStream();

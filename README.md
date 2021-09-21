@@ -7,3 +7,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # changelog-updater
 CI plugin to add a changelog entry, if it is missing, from pull request title
+
+## Usage
+### Docker
+
+```shell script
+docker run --rm \
+  -e CHANGELOG_UPDATER_GIT_TOKEN=sometoken \
+  -e PARAMETER_DEBUG=true \
+  -e CI=true \
+  -e VELA_BUILD_BRANCH=somebranch \
+  -e VELA_REPO_NAME=repo \
+  -e VELA_REPO_ORG=org \
+  -e VELA_BUILD_AUTHOR=devatherock \
+  -e VELA_BUILD_AUTHOR_EMAIL=devatherock@gmail.com \
+  -e CIRCLE_PULL_REQUEST=https://github.com/org/repo/pull/1 \
+  -v /path/to/.ssh:/root/.ssh \
+  -v /path/to/changelog:/work \
+  -w=/work \
+  devatherock/changelog-updater:latest
+```

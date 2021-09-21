@@ -65,6 +65,10 @@ if [ "$ENABLE_DEBUG" = "true" ]; then
   ALL_OPTS="$ALL_OPTS -d"
 fi
 
+if [ "$CI" = "true" ]; then
+  ALL_OPTS="$ALL_OPTS --ci"
+fi
+
 if [ ! -z "$REPO_ORG" ]; then
    ALL_OPTS="$ALL_OPTS -o $REPO_ORG"
 fi

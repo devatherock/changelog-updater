@@ -36,8 +36,8 @@ public class ChangelogUpdater {
                 LOGGER.info("Skipping git update as dry run flag is set");
             } else {
                 if (request.isCi()) {
-                    ProcessUtil.executeCommand("git config user.name " + request.getUsername(), false);
-                    ProcessUtil.executeCommand("git config user.email " + request.getEmail(), false);
+                    ProcessUtil.executeCommand("git config user.name " + request.getUsername(), true);
+                    ProcessUtil.executeCommand("git config user.email " + request.getEmail(), true);
                 }
 
                 ProcessUtil.executeCommand("cd " + request.getWorkingDirectory() + System.lineSeparator()
