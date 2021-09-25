@@ -25,6 +25,7 @@ elif [ ! -z "$CIRCLE_PROJECT_USERNAME" ]; then
   REPO_ORG=$CIRCLE_PROJECT_USERNAME  
 fi
 
+USERNAME=changelogupdater
 if [ ! -z "$VELA_BUILD_AUTHOR" ]; then
   USERNAME=$VELA_BUILD_AUTHOR
 elif [ ! -z "$DRONE_COMMIT_AUTHOR" ]; then
@@ -41,6 +42,7 @@ elif [ ! -z "$CIRCLE_PULL_REQUEST" ]; then
   PULL_REQUEST=$(echo "$CIRCLE_PULL_REQUEST" | cut -d'/' -f 7)
 fi
 
+EMAIL=changelogupdater@devatherock.github.io
 if [ ! -z "$VELA_BUILD_AUTHOR_EMAIL" ]; then
   EMAIL=$VELA_BUILD_AUTHOR_EMAIL
 elif [ ! -z "$DRONE_COMMIT_AUTHOR_EMAIL" ]; then
