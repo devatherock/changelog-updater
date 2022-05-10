@@ -6,6 +6,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * Test class for {@link ChangelogUtility}
@@ -71,5 +72,25 @@ class ChangelogUtilitySpec extends Specification {
 
         then:
         noExceptionThrown()
+    }
+
+    @Unroll
+    void 'test get latest version - #filePath'() {
+        given:
+        Path path = Paths.get(System.properties['user.dir'], "src/test/resources/${filePath}")
+
+        expect:
+        ChangelogUtility.getLatestVersion(path.toString()) == expectedVersion
+
+        where:
+        expectedVersion | filePath
+        '1.0.0'         | 'input/changelog-one.md'
+        '1.0.1'         | 'input/changelog-three.md'
+        '1.0.0'         | 'input/changelog-two.md'
+        '1.0.0'         | 'output/changelog-one-out.md'
+        '1.0.1'         | 'output/changelog-one-out3.md'
+        '1.0.0'         | 'output/changelog-one-out2.md'
+        null            | 'non-existent.md'
+        null            | 'input/empty-file.md'
     }
 }
