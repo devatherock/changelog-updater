@@ -29,15 +29,33 @@ class ChangelogUtilitySpec extends Specification {
         cleanup:
         Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
     }
+    
+    void 'test write entry under new subheader - eof reached'() {
+        given:
+        Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/changelog-four.md')
+        String initialContent = path.toFile().text
 
-    void 'test write entry under existing subheader'() {
+        when:
+        ChangelogUtility.writeToChangelog(path.toString(), 'Entry two')
+        String finalContent = path.toFile().text
+
+        then:
+        finalContent ==
+                Paths.get(System.properties['user.dir'], 'src/test/resources/output/changelog-four-out.md').toFile().text
+
+        cleanup:
+        Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
+    }
+
+    @Unroll
+    void 'test write entry under existing subheader - #nextVersion'() {
         given:
         Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/changelog-one.md')
         String initialContent = path.toFile().text
         String entry = 'Entry five'
 
         when:
-        ChangelogUtility.writeToChangelog(path.toString(), 'Entry five', 'Added', null)
+        ChangelogUtility.writeToChangelog(path.toString(), 'Entry five', 'Added', nextVersion)
         String finalContent = path.toFile().text
 
         then:
@@ -46,15 +64,22 @@ class ChangelogUtilitySpec extends Specification {
 
         cleanup:
         Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
+        
+        where:
+        nextVersion << [
+            null,
+            'Unreleased'
+        ]
     }
 
-    void 'test write entry under new version'() {
+    @Unroll
+    void 'test write entry under new version - #filePath'() {
         given:
-        Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/changelog-one.md')
+        Path path = Paths.get(System.properties['user.dir'], "src/test/resources/$filePath")
         String initialContent = path.toFile().text
 
         when:
-        ChangelogUtility.writeToChangelog(path.toString(), 'Entry five', 'Removed','1.0.1',
+        ChangelogUtility.writeToChangelog(path.toString(), 'Entry five', 'Removed', '1.0.1',
                 new Date(1631478592000), 'Unreleased')
         String finalContent = path.toFile().text
 
@@ -64,6 +89,12 @@ class ChangelogUtilitySpec extends Specification {
 
         cleanup:
         Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
+        
+        where:
+        filePath << [
+            'input/changelog-one.md',
+            'input/changelog-three.md'
+        ]
     }
 
     void 'test write changelog - file does not exist'() {
