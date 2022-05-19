@@ -172,6 +172,7 @@ public class ChangelogUtility {
         int startIndex = 0;
         Stack<String> entryStack = new Stack<>();
         String currentLine = null;
+        boolean noEmptyLinePresent = true;
 
         for (int reverseIndex = fileContent
                 .size() - 1; reverseIndex > currentVersionIndex; reverseIndex--) {
@@ -190,15 +191,26 @@ public class ChangelogUtility {
                     startIndex = reverseIndex + 1;
                     entryStack.pop();
 
-                    while (entryStack.pop().startsWith(changelogLinePrefix)) {
+                    // Seek to the line after existing entries under the existing subheader
+                    while (!entryStack.isEmpty() && entryStack.pop().startsWith(changelogLinePrefix)) {
                         startIndex++;
                     }
-                    startIndex++; // To start after existing empty line
+
+                    // To start after existing empty line, when present(like when a subheader is
+                    // being inserted between 2 subheaders)
+                    if (!entryStack.isEmpty()) {
+                        startIndex++;
+                        noEmptyLinePresent = false;
+                    }
                 }
             }
         }
 
         if (startIndex != 0) {
+            if (noEmptyLinePresent) {
+                insertAt(fileContent, startIndex++, "");
+            }
+
             insertAt(fileContent, startIndex++,
                     String.format("%s %s", DEF_CHANGELOG_SUBHEADER_PREFIX, entryType));
             insertAt(fileContent, startIndex++, String.format("%s %s", changelogLinePrefix, entry));
