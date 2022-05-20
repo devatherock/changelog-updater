@@ -172,7 +172,7 @@ public class ChangelogUtility {
         int startIndex = 0;
         Stack<String> entryStack = new Stack<>();
         String currentLine = null;
-        boolean noEmptyLinePresent = true;
+        boolean noEmptyLinePresent = false;
 
         for (int reverseIndex = fileContent
                 .size() - 1; reverseIndex > currentVersionIndex; reverseIndex--) {
@@ -196,11 +196,13 @@ public class ChangelogUtility {
                         startIndex++;
                     }
 
+                    if (entryStack.isEmpty()) {
+                        noEmptyLinePresent = true;
+                    }
                     // To start after existing empty line, when present(like when a subheader is
                     // being inserted between 2 subheaders)
-                    if (!entryStack.isEmpty()) {
+                    else {
                         startIndex++;
-                        noEmptyLinePresent = false;
                     }
                 }
             }
