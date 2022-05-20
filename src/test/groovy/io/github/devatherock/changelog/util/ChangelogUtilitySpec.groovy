@@ -29,22 +29,41 @@ class ChangelogUtilitySpec extends Specification {
         cleanup:
         Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
     }
-    
-    void 'test write entry under new subheader - eof reached'() {
+
+    @Unroll
+    void 'test write entry under new subheader - eof reached - #inputFile'() {
         given:
-        Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/changelog-four.md')
+        Path path = Paths.get(System.properties['user.dir'], "src/test/resources/${inputFile}")
         String initialContent = path.toFile().text
 
         when:
-        ChangelogUtility.writeToChangelog(path.toString(), 'Entry two')
+        ChangelogUtility.writeToChangelog(path.toString(), 'Entry two', entryType, null)
         String finalContent = path.toFile().text
 
         then:
         finalContent ==
-                Paths.get(System.properties['user.dir'], 'src/test/resources/output/changelog-four-out.md').toFile().text
+                Paths.get(System.properties['user.dir'], "src/test/resources/${outputFile}").toFile().text
 
         cleanup:
         Files.write(path, initialContent.bytes, StandardOpenOption.TRUNCATE_EXISTING)
+
+        where:
+        entryType | inputFile                 | outputFile
+        'Changed' | 'input/changelog-four.md' | 'output/changelog-four-out.md'
+        'Added'   | 'input/changelog-five.md' | 'output/changelog-five-out.md'
+    }
+
+    void 'test write entry to empty file'() {
+        given:
+        Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/empty-file.md')
+        String initialContent = path.toFile().text
+
+        when:
+        ChangelogUtility.writeToChangelog(path.toString(), 'Entry one')
+        String finalContent = path.toFile().text
+
+        then:
+        finalContent == initialContent
     }
 
     @Unroll

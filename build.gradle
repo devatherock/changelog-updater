@@ -88,7 +88,6 @@ ext.jacoco = [
         'io/github/devatherock/changelog/service/ChangelogUpdaterHelper.class',
         'io/github/devatherock/changelog/service/ChangelogUpdater.class',
         'io/github/devatherock/changelog/service/GithubService.class',
-        'io/github/devatherock/changelog/util/ChangelogUtility.class',
         'io/github/devatherock/changelog/util/ProcessUtil.class',
         'io/github/devatherock/Application.class'
     ]
