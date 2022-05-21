@@ -51,6 +51,7 @@ class ChangelogUtilitySpec extends Specification {
         entryType | inputFile                 | outputFile
         'Changed' | 'input/changelog-four.md' | 'output/changelog-four-out.md'
         'Added'   | 'input/changelog-five.md' | 'output/changelog-five-out.md'
+        'Changed' | 'input/changelog-six.md'  | 'output/changelog-six-out.md'
     }
 
     void 'test write entry to empty file'() {
