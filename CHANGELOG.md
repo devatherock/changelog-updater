@@ -1,8 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Dependency check plugin
+
 ### Changed
 - Fixed `EmptyStackException` when writing a new entry type to the very first release
+- Fixed a bug in executing commands
 
 ### Removed
 - Redundant empty line when inserting a subheader above an existing subheader
