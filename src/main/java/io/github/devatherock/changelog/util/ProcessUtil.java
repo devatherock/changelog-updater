@@ -26,7 +26,7 @@ public class ProcessUtil {
         if (shell && !(command instanceof String[])) {
             finalCommand = new String[] { "sh", "-c", command.toString() };
         } else if (command instanceof String) {
-            finalCommand = new String[] { command.toString() };
+            finalCommand = command.toString().split(" ");
         } else {
             finalCommand = (String[]) command;
         }
@@ -64,6 +64,7 @@ public class ProcessUtil {
             }
         } catch (IOException | InterruptedException exception) {
             LOGGER.error("Exception when executing command {}", finalCommand, exception);
+            exitCode = 1;
         }
 
         return exitCode;

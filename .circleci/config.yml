@@ -24,7 +24,7 @@ release_filter: &release_filter
 executors:
   jdk-executor:
     docker:
-      - image: devatherock/graalvm:0.2.0
+      - image: devatherock/graalvm:ol8-java11-22.1.0-3
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
