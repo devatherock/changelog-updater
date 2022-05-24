@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Dependency check plugin
+- Unit tests for `ChangelogUpdaterHelper`
 
 ### Changed
 - Fixed `EmptyStackException` when writing a new entry type to the very first release

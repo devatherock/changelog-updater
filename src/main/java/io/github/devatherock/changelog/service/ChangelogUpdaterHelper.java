@@ -2,6 +2,16 @@ package io.github.devatherock.changelog.service;
 
 import java.util.regex.Pattern;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+/**
+ * Helper class for {@link ChangelogUpdater}
+ * 
+ * @author devaprasadh
+ *
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChangelogUpdaterHelper {
     /**
      * Major version part of a semantic version
@@ -64,6 +74,9 @@ public class ChangelogUpdaterHelper {
         return result;
     }
 
+    /**
+     * Exits the application with an error exit code
+     */
     static void exitWithError() {
         System.exit(1);
     }

@@ -16,6 +16,12 @@ import io.micronaut.core.annotation.Blocking;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Class that handles changelog updates
+ * 
+ * @author devaprasadh
+ *
+ */
 @Slf4j
 @Blocking
 @Singleton
@@ -23,6 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ChangelogUpdater {
     private final GithubService githubService;
 
+    /**
+     * Updates the changelog if it hasn't been already
+     * 
+     * @param request
+     */
     public void updateChangelog(ChangelogUpdateRequest request) {
         if (isChangelogUpdated(request)) {
             LOGGER.info("{} is already updated in PR {}", request.getChangelogFile(), request.getPullRequestNumber());
@@ -48,6 +59,12 @@ public class ChangelogUpdater {
         }
     }
 
+    /**
+     * Checks if the changelog has been updated in the pull request
+     * 
+     * @param request
+     * @return a flag
+     */
     private boolean isChangelogUpdated(ChangelogUpdateRequest request) {
         boolean updated = false;
 
@@ -68,6 +85,11 @@ public class ChangelogUpdater {
         return updated;
     }
 
+    /**
+     * Writes an entry into the changelog
+     * 
+     * @param request
+     */
     private void writeChangelogEntry(ChangelogUpdateRequest request) {
         GithubRelease latestRelease = githubService.getLatestRelease(request.getReleasePrefix(),
                 request.getReleaseSuffix());
@@ -106,6 +128,14 @@ public class ChangelogUpdater {
         }
     }
 
+    /**
+     * Writes an entry into the changelog
+     * 
+     * @param changelogFilePath
+     * @param entry
+     * @param nextVersion
+     * @throws IOException
+     */
     private void writeChangelogEntry(String changelogFilePath, String entry, String nextVersion) throws IOException {
         ChangelogUtility.writeToChangelog(changelogFilePath, entry, ChangelogUtility.ENTRY_TYPE_CHANGED,
                 nextVersion);
