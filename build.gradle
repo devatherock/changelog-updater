@@ -10,7 +10,7 @@ plugins {
     id 'org.owasp.dependencycheck' version '7.1.0.1'
 }
 
-version = "0.1.0"
+version = "0.2.0"
 group = "io.github.devatherock"
 
 repositories {
@@ -86,16 +86,19 @@ ext.jacoco = [
         'io/github/devatherock/changelog/entities/PullRequest.class',
         'io/github/devatherock/changelog/entities/GithubRelease.class',
         'io/github/devatherock/changelog/entities/PullRequestFile.class',
-        'io/github/devatherock/changelog/service/ChangelogUpdaterHelper.class',
         'io/github/devatherock/changelog/service/ChangelogUpdater.class',
         'io/github/devatherock/changelog/service/GithubService.class',
         'io/github/devatherock/Application.class'
     ],
     coverageThresholds: [
         'io.github.devatherock.changelog.util.ProcessUtil': [
-            'COMPLEXITY': 0.90,
-            'INSTRUCTION': 0.85,
-            'LINE': 0.79
+            'INSTRUCTION': 0.86,
+            'LINE': 0.81
+        ],
+        'io.github.devatherock.changelog.service.ChangelogUpdaterHelper': [
+            'COMPLEXITY': 0.93,
+            'INSTRUCTION': 0.97,
+            'LINE': 0.92
         ]
     ]
 ]

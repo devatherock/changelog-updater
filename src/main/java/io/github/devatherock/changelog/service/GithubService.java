@@ -19,6 +19,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service class to interact with Github APIs
+ * 
+ * @author devaprasadh
+ *
+ */
 @Slf4j
 @Singleton
 @RequiredArgsConstructor
@@ -31,6 +37,12 @@ public class GithubService {
     @Setter
     private String gitRepoBaseUrl;
 
+    /**
+     * Fetches the list of files modified in a pull request
+     * 
+     * @param pullRequestNumber
+     * @return list of files
+     */
     public List<PullRequestFile> getPullRequestFiles(String pullRequestNumber) {
         HttpRequest<Object> filesListRequest = HttpRequest
                 .create(HttpMethod.GET,
@@ -50,6 +62,12 @@ public class GithubService {
         return filesList;
     }
 
+    /**
+     * Fetches the title of the pull request with the specified number
+     * 
+     * @param pullRequestNumber
+     * @return the pull request title
+     */
     public String getPullRequestTitle(String pullRequestNumber) {
         HttpRequest<Object> filesListRequest = HttpRequest
                 .create(HttpMethod.GET,
