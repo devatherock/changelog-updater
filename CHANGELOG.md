@@ -4,6 +4,7 @@
 ### Added
 - Dependency check plugin
 - Unit tests for `ChangelogUpdaterHelper`
+- Unit test for `GithubService`
 
 ### Changed
 - Fixed `EmptyStackException` when writing a new entry type to the very first release
