@@ -1,11 +1,18 @@
 package io.github.devatherock.changelog.service
 
+import org.junit.Rule
+import org.junit.contrib.java.lang.system.ExpectedSystemExit
+import org.junit.contrib.java.lang.system.internal.CheckExitCalled
+
 import spock.lang.Specification
 
 /**
  * Test class for {@link ChangelogUpdaterHelper}
  */
 class ChangelogUpdaterHelperSpec extends Specification {
+
+    @Rule
+    ExpectedSystemExit exitRule = ExpectedSystemExit.none()
 
     void 'test compare versions'() {
         expect:
@@ -22,5 +29,17 @@ class ChangelogUpdaterHelperSpec extends Specification {
         '1.1.1'       | '1.1.2'      | -1
         '1.1.2'       | '1.1.1'      | 1
         '1.1.2'       | '1.1.2'      | 0
+    }
+
+    void 'test exit with error'() {
+        given:
+        exitRule.expectSystemExitWithStatus(1)
+
+        when:
+        ChangelogUpdaterHelper.exitWithError()
+
+        then:
+        CheckExitCalled exit = thrown()
+        exit.status == 1
     }
 }
