@@ -90,10 +90,8 @@ ext.jacoco = [
         // TODO Remove once tests are written
         'io/github/devatherock/changelog/entities/PullRequest.class',
         'io/github/devatherock/changelog/entities/GithubRelease.class',
-        'io/github/devatherock/changelog/entities/PullRequestFile.class',
         'io/github/devatherock/changelog/service/ChangelogUpdater.class',
         'io/github/devatherock/changelog/service/GithubService.class',
-        'io/github/devatherock/Application.class'
     ],
     coverageThresholds: [
         'io.github.devatherock.changelog.util.ProcessUtil': [
@@ -104,7 +102,12 @@ ext.jacoco = [
             'COMPLEXITY': 0.93,
             'INSTRUCTION': 0.97,
             'LINE': 0.92
-        ]
+        ],
+        'io.github.devatherock.Application': [
+            'COMPLEXITY': 0.80,
+            'INSTRUCTION': 0.96,
+            'LINE': 0.93,
+        ],
     ]
 ]
 
