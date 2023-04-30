@@ -3,12 +3,12 @@
 ## [Unreleased]
 ### Added
 - Dependency check plugin
-- Unit tests for `ChangelogUpdaterHelper`
-- Unit test for `GithubService`
+- Unit tests
 
 ### Changed
 - Fixed `EmptyStackException` when writing a new entry type to the very first release
 - Fixed a bug in executing commands
+- Used Java 17 for builds
 
 ### Removed
 - Redundant empty line when inserting a subheader above an existing subheader
