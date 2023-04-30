@@ -6,7 +6,7 @@ slack_image: &slack_image
         password: $DOCKER_PASSWORD
 
 orbs:
-  docker: circleci/docker@1.7.0
+  docker: circleci/docker@2.2.0
 
 work_directory: &work_directory
   working_directory: ~/changelog-updater
@@ -24,7 +24,7 @@ release_filter: &release_filter
 executors:
   jdk-executor:
     docker:
-      - image: devatherock/graalvm:ol8-java11-22.1.0-3
+      - image: devatherock/graalvm:ol8-java17-22.3.2-1
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
@@ -32,7 +32,7 @@ executors:
     <<: *work_directory
   docker-executor:
     docker:
-      - image: cimg/openjdk:11.0
+      - image: cimg/openjdk:17.0
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
