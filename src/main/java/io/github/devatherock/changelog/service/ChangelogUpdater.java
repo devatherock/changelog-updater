@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ChangelogUpdater {
     private final GithubService githubService;
+    private final ProcessUtil processUtil;
 
     /**
      * Updates the changelog if it hasn't been already
@@ -47,11 +48,11 @@ public class ChangelogUpdater {
                 LOGGER.info("Skipping git update as dry run flag is set");
             } else {
                 if (request.isCi()) {
-                    ProcessUtil.executeCommand("git config user.name " + request.getUsername(), true);
-                    ProcessUtil.executeCommand("git config user.email " + request.getEmail(), true);
+                    processUtil.executeCommand("git config user.name " + request.getUsername(), true);
+                    processUtil.executeCommand("git config user.email " + request.getEmail(), true);
                 }
 
-                ProcessUtil.executeCommand("cd " + request.getWorkingDirectory() + System.lineSeparator()
+                processUtil.executeCommand("cd " + request.getWorkingDirectory() + System.lineSeparator()
                         + "git add " + request.getChangelogFile() + System.lineSeparator()
                         + "git commit -m 'chore(changelog-updater): Added changelog entry'" + System.lineSeparator()
                         + "git push origin " + request.getPullRequestBranch(), true);

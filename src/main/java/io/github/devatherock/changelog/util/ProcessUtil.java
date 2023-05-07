@@ -4,9 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import javax.inject.Singleton;
+
 import org.apache.commons.io.IOUtils;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
  * Utility class to handle processes
  */
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Singleton
+@NoArgsConstructor
 public class ProcessUtil {
 
     /**
@@ -23,7 +25,7 @@ public class ProcessUtil {
      * @param command
      * @return exit code
      */
-    public static int executeCommand(Object command, boolean shell) {
+    public int executeCommand(Object command, boolean shell) {
         String[] finalCommand = null;
 
         if (shell && !(command instanceof String[])) {

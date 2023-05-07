@@ -1,6 +1,7 @@
 package io.github.devatherock.changelog.util
 
 import spock.lang.Specification
+import spock.lang.Subject
 import spock.lang.Unroll
 
 /**
@@ -8,10 +9,13 @@ import spock.lang.Unroll
  */
 class ProcessUtilSpec extends Specification {
 
+    @Subject
+    ProcessUtil processUtil = new ProcessUtil()
+
     @Unroll
     void 'test execute command - #command, #shell'() {
         expect:
-        ProcessUtil.executeCommand(command, shell) == exitCode
+        processUtil.executeCommand(command, shell) == exitCode
 
         where:
         shell | exitCode | command

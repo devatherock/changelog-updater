@@ -3,7 +3,7 @@
 ## [Unreleased]
 ### Added
 - Dependency check plugin
-- Unit tests
+- [#2](https://github.com/devatherock/changelog-updater/issues/2): Unit tests
 
 ### Changed
 - Fixed `EmptyStackException` when writing a new entry type to the very first release

@@ -72,7 +72,6 @@ class ChangelogUtilitySpec extends Specification {
         given:
         Path path = Paths.get(System.properties['user.dir'], 'src/test/resources/input/changelog-one.md')
         String initialContent = path.toFile().text
-        String entry = 'Entry five'
 
         when:
         ChangelogUtility.writeToChangelog(path.toString(), 'Entry five', 'Added', nextVersion)
