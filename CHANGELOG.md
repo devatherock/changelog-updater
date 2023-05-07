@@ -9,6 +9,7 @@
 - Fixed `EmptyStackException` when writing a new entry type to the very first release
 - Fixed a bug in executing commands
 - Used Java 17 for builds
+- Upgraded spotless to `6.18.0`
 
 ### Removed
 - Redundant empty line when inserting a subheader above an existing subheader
