@@ -88,8 +88,6 @@ run {
 ext.jacoco = [
     exclusions: [
         // TODO Remove once tests are written
-        'io/github/devatherock/changelog/entities/PullRequest.class',
-        'io/github/devatherock/changelog/entities/GithubRelease.class',
         'io/github/devatherock/changelog/service/ChangelogUpdater.class',
         'io/github/devatherock/changelog/service/GithubService.class',
     ],
