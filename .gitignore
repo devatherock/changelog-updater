@@ -6,3 +6,4 @@ bin/
 .settings
 code-formatter.xml
 checkstyle.xml
+codenarc.xml
