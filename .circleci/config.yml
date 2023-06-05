@@ -103,7 +103,7 @@ jobs:
       - run: |
           TAG=${CIRCLE_TAG#v}
           DEV_TAG=${CIRCLE_SHA1:0:8}
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker pull devatherock/changelog-updater:$DEV_TAG
           docker tag devatherock/changelog-updater:$DEV_TAG devatherock/changelog-updater:$TAG
           docker push devatherock/changelog-updater:$TAG
