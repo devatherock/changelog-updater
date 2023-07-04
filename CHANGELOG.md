@@ -11,6 +11,7 @@
 - Used Java 17 for builds
 - Upgraded spotless to `6.18.0`
 - Updated dockerhub readme in CI pipeline
+- Upgraded gradle to `7.6.2`
 
 ### Removed
 - Redundant empty line when inserting a subheader above an existing subheader
