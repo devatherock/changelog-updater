@@ -1,6 +1,6 @@
 slack_image: &slack_image
   docker:
-    - image: devatherock/simple-slack:0.7.0
+    - image: devatherock/simple-slack:1.0.0
       auth:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
@@ -24,7 +24,7 @@ release_filter: &release_filter
 executors:
   jdk-executor:
     docker:
-      - image: devatherock/graalvm:ol8-java17-22.3.2-1
+      - image: devatherock/graalvm:ol8-java17-22.3.2-5
         auth:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
