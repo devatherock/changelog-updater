@@ -9,7 +9,7 @@
 - Fixed `EmptyStackException` when writing a new entry type to the very first release
 - Fixed a bug in executing commands
 - Used Java 17 for builds
-- Upgraded spotless to `6.18.0`
+- Upgraded spotless to `6.19.0`
 - Updated dockerhub readme in CI pipeline
 - Upgraded gradle to `7.6.2`
 
